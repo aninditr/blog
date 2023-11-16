@@ -1,5 +1,5 @@
 ---
-title: BERTScore: Evaluating Text Generation with BERT
+title: BERTScore - Evaluating Text Generation with BERT
 author:  Aninditha Ramesh, Srikumar Subramanian
 date: 2023-11-16
 tag:
