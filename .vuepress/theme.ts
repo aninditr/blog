@@ -3,18 +3,17 @@ import navbar from "./navbar.js";
 // import sidebar from "./sidebar.js";
 
 export default hopeTheme({
-  hostname: "https://lileicc.github.io",
+  hostname: "https://aninditr.github.io",
 
   author: {
-    name: "Lei Li",
-    url: "https://www.cs.ucsb.edu/~leili",
+    name: "Aninditha Ramesh"
   },
 
   iconAssets: "iconfont",
 
   logo: "/logo.svg",
 
-  repo: "lileicc/blog",
+  repo: "aninditr/blog",
 
   // docsDir: "demo/src",
 
@@ -24,7 +23,7 @@ export default hopeTheme({
   // sidebar
   sidebar: false,
 
-  footer: "Li Lab",
+  footer: "",
 
   displayFooter: true,
 
@@ -34,8 +33,7 @@ export default hopeTheme({
     description: "AI Researcher",
     intro: "/",
     medias: {
-      GitHub: "https://www.github.com/lileicc",
-      Twitter: "https://twitter.com/lileics",
+      GitHub: "https://www.github.com/aninditr"
     },
   },
 
