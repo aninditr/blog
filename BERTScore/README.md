@@ -48,15 +48,21 @@ In conclusion, while lexical overlap metrics have their place in evaluating cert
 ## How BERTScore works
 
 BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as x=⟨x1,...,xk⟩ and tokenized candidate sentence  is represented as x^=⟨x1^,...,xl^⟩.
-Token Representation
+
+* Token Representation
 Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence x = hx1, . . . , xki, is mapped to the generated vectors hx1, . . . , xki. and the tokenized candidate xˆ = hxˆ1, . . . , xˆmi is mapped to the generated vectors hˆx1, . . . , ˆxli.
-Similarity measure
+* Similarity measure
 Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: [formula]
  BERTScore
-The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^. [formula].Precision is calculated using similarity between each token in x^ to a token in x. [formula]. These two measures are combined to calculate precision.
-Importance weighting
+The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^.
+RBERT = \frac{1}{|x|} \sum_{x_i \in x} \max_{\hat{x}_j \in \hat{x}} x_i^T \hat{x}_j
+Precision is calculated using similarity between each token in x^ to a token in x.
+PBERT = \frac{1}{|\hat{x}|} \sum_{\hat{x}_j \in \hat{x}} \max_{x_i \in x} x_i^T \hat{x}_j
+These two measures are combined to calculate F1 score.
+FBERT = \frac{2 \cdot PBERT \cdot RBERT}{PBERT + RBERT}
+* Importance weighting
 To account for the importance of rare words in sentence similarity, the authors experiment with incorporating inverse document frequency (idf) scores derived from the test corpus.
-Baseline rescaling
+* Baseline rescaling
 To scale BERTScore values in the range of 0 and 1, an empirical lower bound based on the Common Crawl monolingual datasets is used and the score values are averaged as below [formula]
 
 ## Experiments
