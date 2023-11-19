@@ -10,16 +10,14 @@ category:
  - MT
 ---
 
-​	Introductory paragraph
-
-<!-- more -->
+In this paper, we will explore the BERTScore text evaluation metric from the paper _BERTScore - Evaluating Text Generation with BERT_
 
 Paper：<https://arxiv.org/pdf/1904.09675.pdf>
 
 Github: <https://github.com/Tiiiger/bert_score>
 
-
 ## Introduction
+
 In the ever-evolving realm of machine learning, particularly within Natural Language Processing (NLP) and Large Language Models (LLMs), the demand for robust evaluation metrics has reached a critical turning point. Assessing the accuracy of machine translation (MT) poses a big challenge, given the intricate nature of algorithmically determining semantic equivalence between sentences. While human judgment remains a cornerstone for MT evaluation metrics, the prevalent approach of gauging similarity by examining word order and usage lacks a nuanced understanding of underlying meanings. Addressing this gap, this article delves into a novel solution – BERTScore.
 
 Introduced as a neural-network-based sentence representation by Google in October 2018, BERT (Bidirectional Encoder Representations from Transformers) stands as a important force in NLP. Developed on the foundations of the Transformer architecture initially tailored for machine translation, BERT undergoes training to predict masked-out words and evaluate sentence coherence. This unique training methodology yields informative sentence representations, propelling BERT to be the leader in various NLP tasks, including sentiment analysis, paraphrase detection, question-answering, and syntactic analysis.
@@ -27,6 +25,7 @@ Introduced as a neural-network-based sentence representation by Google in Octobe
 As part of the ongoing research in evaluation metrics, BERTScore emerges as a unique method. Leveraging contextual embeddings from the BERT model, BERTScore looks beyond word count to understand the meaning of words in a sentence. Instead of solely looking for word similarity, it assesses how effectively sentences convey identical ideas, thus offering a more nuanced understanding of semantic equivalence. This article elucidates the existing limitations of current metrics and explores how BERTScore surpasses them, explaining a new technique in the assessment of sentence similarity and machine-generated text quality.
 
 ## Issues with current metrics
+
 Lexical overlap metrics, such as BLEU (Bilingual Evaluation Understudy), have been longstanding tools for evaluating the quality of machine-generated text. However, they come with inherent limitations that become particularly evident in scenarios where the goal is to measure the semantic similarity between sentences rather than mere lexical similarity.
 
 Semantic Gap in Lexical Overlap Metrics:
@@ -47,18 +46,18 @@ The shift from traditional lexical metrics to embeddings-based metrics like BERT
 In conclusion, while lexical overlap metrics have their place in evaluating certain aspects of generated text, they fall short when it comes to capturing the rich semantic content and contextual nuances of language. BERTScore, with its ability to generate embeddings that encapsulate the semantics of sentences, provides a more nuanced and accurate measure of text similarity, making it a valuable addition to the toolkit for evaluating the performance of NLP models.
 
 ## How BERTScore works
+
 BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as x=⟨x1,...,xk⟩ and tokenized candidate sentence  is represented as x^=⟨x1^,...,xl^⟩.
 Token Representation
 Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence x = hx1, . . . , xki, is mapped to the generated vectors hx1, . . . , xki. and the tokenized candidate xˆ = hxˆ1, . . . , xˆmi is mapped to the generated vectors hˆx1, . . . , ˆxli.
 Similarity measure
-Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: <formula>
+Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: [formula]
  BERTScore
-The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^. <formula>.Precision is calculated using similarity between each token in x^ to a token in x. <formula>. These two measures are combined to calculate precision. 
+The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^. [formula].Precision is calculated using similarity between each token in x^ to a token in x. [formula]. These two measures are combined to calculate precision.
 Importance weighting
 To account for the importance of rare words in sentence similarity, the authors experiment with incorporating inverse document frequency (idf) scores derived from the test corpus.
 Baseline rescaling
-To scale BERTScore values in the range of 0 and 1, an empirical lower bound based on the Common Crawl monolingual datasets is used and the score values are averaged as below <formula>
-
+To scale BERTScore values in the range of 0 and 1, an empirical lower bound based on the Common Crawl monolingual datasets is used and the score values are averaged as below [formula]
 
 ## Experiments
 
@@ -75,7 +74,6 @@ The segment-level analysis emphasized BERTSCORE's significant advantage over tra
 While idf weighting showed occasional benefits, its impact varied across scenarios. Determining the advantageous use of idf weighting remains an area for future research, contingent on text domain and available test data. For the rest of our experiments, we proceeded without idf weighting.
 
 Regarding precision (PBERT), recall (RBERT), and F1 (FBERT), we found that F1 consistently performed well across diverse settings, making it our recommended metric. Our study provides a comprehensive view of results, including experiments with idf weighting, various contextual embedding models, and model selection.
-
 
 | Metric   | en↔cs         | en↔de         | en↔et         | en↔fi         | en↔ru         | en↔tr         | en↔zh         |
 |----------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
@@ -102,8 +100,15 @@ language pair, the left number is the to-English correlation, and the right is t
 | FBERT    | .404/.562     | .550/.728     | .397/.586     | .296/.546     | .353/.423     | .292/.399     | .264/.364     |
 | FBERT (idf) | .408/.553   | .550/.721     | .395/585      | .293/.537     | .346/.425     | .296/.406     | .260/.366     |
 
-Table 4: Kendall correlations with segment-level human judgments on WMT18. For each language
+Table 2: Kendall correlations with segment-level human judgments on WMT18. For each language
 pair, the left number is the to-English correlation, and the right is the from-English. 
 
+In our experiments with the WMT dataset and BERTScore evaluation metric, we observed the following results.
+
+| Metric   | cs-en             | de-en             | et-en             | fi-en             | ru-en             | tr-en             | zh-en             | avg               |
+|---------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|-------------------|
+| PBERT | 0.386692759295499 | 0.5414273046227397 | 0.3891856631582659 | 0.2833588957055215 | 0.34505959246443674 | 0.2802346041055718 | 0.2483136972749348 | 0.3534675023752814 |
+| RBERT | 0.387866927592955 | 0.5460024932207529 | 0.39140706263993935 | 0.3040644171779141 | 0.34256055363321797 | 0.2898533724340176 | 0.2548490571694097 | 0.3595148405526009 |
+| FBERT | 0.4035225048923679 | 0.5496780660832016 | 0.3971897533541369 | 0.2962678936605317 | 0.3533256439830834 | 0.29196480938416425 | 0.2635428845519681 | 0.36507022227277913 |
 
 ## References
