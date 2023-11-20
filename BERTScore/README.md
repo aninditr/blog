@@ -125,4 +125,14 @@ In our experiments with the WMT dataset and BERTScore evaluation metric, we obse
 | RBERT | 0.387866927592955 | 0.5460024932207529 | 0.39140706263993935 | 0.3040644171779141 | 0.34256055363321797 | 0.2898533724340176 | 0.2548490571694097 | 0.3595148405526009 |
 | FBERT | 0.4035225048923679 | 0.5496780660832016 | 0.3971897533541369 | 0.2962678936605317 | 0.3533256439830834 | 0.29196480938416425 | 0.2635428845519681 | 0.36507022227277913 |
 
+## Summary
+To conclude, the paper introduces BERTSCORE, a novel metric designed for evaluating generated text against reference standards. Emphasizing simplicity, task agnosticism, and user-friendliness, BERTSCORE addresses limitations seen in commonly used metrics, particularly on challenging adversarial examples. Extensive experiments explore different configurations of BERTSCORE, revealing its superior correlation compared to common metrics and effectiveness in model selection.
+
+While no single configuration clearly outperforms all others, FBERT is recommended for machine translation evaluation due to its reliability. For English text generation, the 24-layer RoBERTa large model is suggested, while the multilingual BERTmulti is suitable for non-English languages, albeit with potential performance variations in low-resource languages.
+
+Comparisons with concurrent methods, such as Zhao et al.'s approach focusing on earth mover's distance, indicate that BERTSCORE, when integrated with certain improvements, matches or surpasses alternative methods. Updates to the YiSi-1 model and other related work further validate the effectiveness of BERTSCORE. Ongoing and future research directions involve task-specific metric design utilizing BERTSCORE as a subroutine.
+
 ## References
+1. https://viblo.asia/p/tim-hieu-ve-bleu-va-wer-metric-cho-1-so-tac-vu-trong-nlp-Eb85oA16Z2G
+2. https://kv-emptypages.blogspot.com/2019/04/understanding-mt-quality-bleu-scores.html
+3. Zhang*, Tianyi, et al. “BERTScore: Evaluating Text Generation with BERT.” International Conference on Learning Representations, 2020, https://openreview.net/forum?id=SkeHuCVFDr.
