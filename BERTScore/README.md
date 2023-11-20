@@ -28,14 +28,19 @@ As part of the ongoing research in evaluation metrics, BERTScore emerges as a un
 
 Lexical overlap metrics, such as BLEU (Bilingual Evaluation Understudy), have been longstanding tools for evaluating the quality of machine-generated text. However, they come with inherent limitations that become particularly evident in scenarios where the goal is to measure the semantic similarity between sentences rather than mere lexical similarity.
 
+
 Semantic Gap in Lexical Overlap Metrics:
 The figure clearly illustrates a limitation of metrics like BLEU—they struggle to capture the nuanced semantics of sentences. This is because BLEU primarily relies on the matching of n-grams (contiguous sequences of words), without considering the contextual meaning or the order in which words appear. As a result, sentences that convey the same meaning but differ in word choice or structure may receive low scores, leading to an inaccurate representation of their similarity.
+
+![BLEU example](./images/BLEU_example.png)
 
 BERTScore's Semantic Understanding:
 BERTScore, on the other hand, addresses this limitation by leveraging the power of pre-trained BERT models. BERT's bidirectional contextual embeddings allow it to grasp the nuanced semantics of language, considering not only the presence of words but also their contextual relationships. This enables BERTScore to provide high scores for sentences that convey the same meaning, even if they exhibit lexical variations.
 
 Word Order and Semantic Nuances:
 Another drawback of lexical overlap metrics, especially when evaluating on uni-grams, is their inability to account for variations in word order. Sentences with the same words but different structures may have distinct meanings, yet traditional metrics might overlook these differences. BERTScore, by considering the entire sentence and its contextual embeddings, naturally accommodates variations in word order, providing a more comprehensive evaluation of semantic similarity.
+
+![Unigram example](./images/unigram_example.png)
 
 Capturing Paraphrasing and Synonyms:
 Lexical overlap metrics often struggle with paraphrased or synonymous expressions, as they might not share exact n-grams. In contrast, BERTScore excels in recognizing paraphrased or synonymous sentences, as it focuses on the underlying semantic content rather than rigid word matching. This makes BERTScore particularly valuable in applications where variations in expression are common.
@@ -47,19 +52,22 @@ In conclusion, while lexical overlap metrics have their place in evaluating cert
 
 ## How BERTScore works
 
-BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as x=⟨x1,...,xk⟩ and tokenized candidate sentence  is represented as x^=⟨x1^,...,xl^⟩.
+BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as $$x = \langle x_1, \ldots, x_{ki} \rangle$$
+ and tokenized candidate sentence  is represented as $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
+
+![BERTScore illustration](./images/BERTScore_illustration.png)
 
 * Token Representation
-Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence x = hx1, . . . , xki, is mapped to the generated vectors hx1, . . . , xki. and the tokenized candidate xˆ = hxˆ1, . . . , xˆmi is mapped to the generated vectors hˆx1, . . . , ˆxli.
+Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence $$x = \langle x_1, \ldots, x_{ki} \rangle$$ is mapped to the generated vectors $$\langle x_1, \ldots, x_{ki} \rangle$$. and the tokenized candidate $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$ is mapped to the generated vectors $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
 * Similarity measure
-Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: [formula]
+Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: $$\frac{x_i^T \hat{x}_j}{\|x_i\| \cdot \| \hat{x}_j \|}$$
  BERTScore
 The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^.
-RBERT = \frac{1}{|x|} \sum_{x_i \in x} \max_{\hat{x}_j \in \hat{x}} x_i^T \hat{x}_j
+$$RBERT = \frac{1}{|x|} \sum_{x_i \in x} \max_{\hat{x}_j \in \hat{x}} x_i^T \hat{x}_j$$
 Precision is calculated using similarity between each token in x^ to a token in x.
-PBERT = \frac{1}{|\hat{x}|} \sum_{\hat{x}_j \in \hat{x}} \max_{x_i \in x} x_i^T \hat{x}_j
+$$PBERT = \frac{1}{|\hat{x}|} \sum_{\hat{x}_j \in \hat{x}} \max_{x_i \in x} x_i^T \hat{x}_j$$
 These two measures are combined to calculate F1 score.
-FBERT = \frac{2 \cdot PBERT \cdot RBERT}{PBERT + RBERT}
+$$FBERT = \frac{2 \cdot PBERT \cdot RBERT}{PBERT + RBERT}$$
 * Importance weighting
 To account for the importance of rare words in sentence similarity, the authors experiment with incorporating inverse document frequency (idf) scores derived from the test corpus.
 * Baseline rescaling
