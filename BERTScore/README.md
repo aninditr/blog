@@ -52,15 +52,23 @@ In conclusion, while lexical overlap metrics have their place in evaluating cert
 
 ## How BERTScore works
 
-BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as $$x = \langle x_1, \ldots, x_{ki} \rangle$$
- and tokenized candidate sentence  is represented as $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
+BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as
+$$x = \langle x_1, \ldots, x_{ki} \rangle$$
+and tokenized candidate sentence  is represented as
+$$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
 
 ![BERTScore illustration](./images/BERTScore_illustration.png)
 
 * Token Representation
-Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence $$x = \langle x_1, \ldots, x_{ki} \rangle$$ is mapped to the generated vectors $$\langle x_1, \ldots, x_{ki} \rangle$$. and the tokenized candidate $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$ is mapped to the generated vectors $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
+Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence $$x = \langle x_1, \ldots, x_{ki} \rangle$$ is mapped to the generated vectors 
+$$\langle x_1, \ldots, x_{ki} \rangle$$
+and the tokenized candidate 
+$$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$
+is mapped to the generated vectors 
+$$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$
 * Similarity measure
-Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: $$\frac{x_i^T \hat{x}_j}{\|x_i\| \cdot \| \hat{x}_j \|}$$
+Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: 
+$$\frac{x_i^T \hat{x}_j}{\|x_i\| \cdot \| \hat{x}_j \|}$$
  BERTScore
 The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^.
 $$RBERT = \frac{1}{|x|} \sum_{x_i \in x} \max_{\hat{x}_j \in \hat{x}} x_i^T \hat{x}_j$$
