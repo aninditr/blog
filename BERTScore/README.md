@@ -28,7 +28,6 @@ As part of the ongoing research in evaluation metrics, BERTScore emerges as a un
 
 Lexical overlap metrics, such as BLEU (Bilingual Evaluation Understudy), have been longstanding tools for evaluating the quality of machine-generated text. However, they come with inherent limitations that become particularly evident in scenarios where the goal is to measure the semantic similarity between sentences rather than mere lexical similarity.
 
-
 Semantic Gap in Lexical Overlap Metrics:
 The figure clearly illustrates a limitation of metrics like BLEU—they struggle to capture the nuanced semantics of sentences. This is because BLEU primarily relies on the matching of n-grams (contiguous sequences of words), without considering the contextual meaning or the order in which words appear. As a result, sentences that convey the same meaning but differ in word choice or structure may receive low scores, leading to an inaccurate representation of their similarity.
 
@@ -60,14 +59,14 @@ $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
 ![BERTScore illustration](./images/BERTScore_illustration.png)
 
 * Token Representation
-Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence $$x = \langle x_1, \ldots, x_{ki} \rangle$$ is mapped to the generated vectors 
+Tokenization involves breaking sown the input sentence into a series of words, where new words are broken down to familiar words that have been observed by the model before. Given the source and target sentence, the tokenizer from BERT is used to tokenize the sentences, after which the embedding model is used to generate a sequence of vectors. As a result, the tokenized reference sentence $$x = \langle x_1, \ldots, x_{ki} \rangle$$ is mapped to the generated vectors
 $$\langle x_1, \ldots, x_{ki} \rangle$$
-and the tokenized candidate 
+and the tokenized candidate
 $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$
-is mapped to the generated vectors 
+is mapped to the generated vectors
 $$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$
 * Similarity measure
-Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula: 
+Since the words are now reduced to vectors, we can make use of linear algebra to perform calculations and derive a soft measure of similarity instead of an exact match. To compute this, the cosine similarity of each candidate and reference token is calculated. This is done with the following formula:
 $$\frac{x_i^T \hat{x}_j}{\|x_i\| \cdot \| \hat{x}_j \|}$$
  BERTScore
 The similarity measures are used to calculate the Precision and Recall. Recall is calculated using similarity between each token in x to a token in x^.
@@ -109,7 +108,7 @@ Regarding precision (PBERT), recall (RBERT), and F1 (FBERT), we found that F1 co
 | FBERT (idf) | .985/.995   | .999/.990     | .992/.981     | .992/.972     | .991/.991     | .826/.941     | .989/.973     |
 
 Table 1: Absolute Pearson correlations with system-level human judgments on WMT18. For each
-language pair, the left number is the to-English correlation, and the right is the from-English. 
+language pair, the left number is the to-English correlation, and the right is the from-English.
 
 | Metric   | en↔cs         | en↔de         | en↔et         | en↔fi         | en↔ru         | en↔tr         | en↔zh         |
 |----------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
@@ -123,7 +122,7 @@ language pair, the left number is the to-English correlation, and the right is t
 | FBERT (idf) | .408/.553   | .550/.721     | .395/585      | .293/.537     | .346/.425     | .296/.406     | .260/.366     |
 
 Table 2: Kendall correlations with segment-level human judgments on WMT18. For each language
-pair, the left number is the to-English correlation, and the right is the from-English. 
+pair, the left number is the to-English correlation, and the right is the from-English.
 
 In our experiments with the WMT dataset and BERTScore evaluation metric, we observed the following results.
 
@@ -134,6 +133,7 @@ In our experiments with the WMT dataset and BERTScore evaluation metric, we obse
 | FBERT | 0.4035225048923679 | 0.5496780660832016 | 0.3971897533541369 | 0.2962678936605317 | 0.3533256439830834 | 0.29196480938416425 | 0.2635428845519681 | 0.36507022227277913 |
 
 ## Summary
+
 To conclude, the paper introduces BERTSCORE, a novel metric designed for evaluating generated text against reference standards. Emphasizing simplicity, task agnosticism, and user-friendliness, BERTSCORE addresses limitations seen in commonly used metrics, particularly on challenging adversarial examples. Extensive experiments explore different configurations of BERTSCORE, revealing its superior correlation compared to common metrics and effectiveness in model selection.
 
 While no single configuration clearly outperforms all others, FBERT is recommended for machine translation evaluation due to its reliability. For English text generation, the 24-layer RoBERTa large model is suggested, while the multilingual BERTmulti is suitable for non-English languages, albeit with potential performance variations in low-resource languages.
@@ -141,6 +141,7 @@ While no single configuration clearly outperforms all others, FBERT is recommend
 Comparisons with concurrent methods, such as Zhao et al.'s approach focusing on earth mover's distance, indicate that BERTSCORE, when integrated with certain improvements, matches or surpasses alternative methods. Updates to the YiSi-1 model and other related work further validate the effectiveness of BERTSCORE. Ongoing and future research directions involve task-specific metric design utilizing BERTSCORE as a subroutine.
 
 ## References
-1. https://viblo.asia/p/tim-hieu-ve-bleu-va-wer-metric-cho-1-so-tac-vu-trong-nlp-Eb85oA16Z2G
-2. https://kv-emptypages.blogspot.com/2019/04/understanding-mt-quality-bleu-scores.html
-3. Zhang*, Tianyi, et al. “BERTScore: Evaluating Text Generation with BERT.” International Conference on Learning Representations, 2020, https://openreview.net/forum?id=SkeHuCVFDr.
+
+1. <https://viblo.asia/p/tim-hieu-ve-bleu-va-wer-metric-cho-1-so-tac-vu-trong-nlp-Eb85oA16Z2G>
+2. <https://kv-emptypages.blogspot.com/2019/04/understanding-mt-quality-bleu-scores.html>
+3. Zhang*, Tianyi, et al. “BERTScore: Evaluating Text Generation with BERT.” International Conference on Learning Representations, 2020, <https://openreview.net/forum?id=SkeHuCVFDr>.
