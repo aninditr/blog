@@ -54,7 +54,7 @@ In conclusion, while lexical overlap metrics have their place in evaluating cert
 BERTScore uses contextual embeddings from models like BERT to represent the tokens. The advantage of using contextual embeddings is that the same work can have different vector representations depending on the context or the surrounding words. Given a candidate sentence (generated text) and a reference sentence embeddings, BERTScore computes matching using cosine similarity, optionally weighted with inverse document frequency scores. Assume the tokenized reference sentence is represented as
 $$x = \langle x_1, \ldots, x_{ki} \rangle$$
 and tokenized candidate sentence  is represented as
-$$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$.
+$$\hat{x} = \langle \hat{x}_1, \ldots, \hat{x}_{mi} \rangle$$
 
 ![BERTScore illustration](./images/BERTScore_illustration.png)
 
